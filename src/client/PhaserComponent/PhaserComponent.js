@@ -4,17 +4,15 @@ import Phaser from 'phaser';
 
 let gameOptions = {
 	tileSize: 40,
-	gameWidth: 320,
-	gameHeight: 420,
+	gameWidth: 300,
+	gameHeight: 400,
 	gameSpeed: 100
 }
 class PhaserComponent extends React.Component {
-	
-	
+
 	render() {
 		return (
 			window.onload = function () {
-
 				let config = {
 					type: Phaser.CANVAS,
 					width: gameOptions.gameWidth,
@@ -83,9 +81,10 @@ class PhaserComponent extends React.Component {
 						canvas.style.height = windowHeight + "px";
 					}
 				}
+				
 			}
 		)
 	}
 }
-
+//exports PhaserComponent to App.js
 export default PhaserComponent;
