@@ -42,9 +42,9 @@
 	-->
 	<script>
 		let gameOptions = {
-			tileSize: 40,
-			gameWidth: 320,
-			gameHeight: 420,
+			tileSize: 32,
+			gameWidth: 800,
+			gameHeight: 500,
 			gameSpeed: 100
 		}
 
@@ -67,25 +67,29 @@
 					create: create,
 				}
 			};
-
+			
 			let game = new Phaser.Game(config);
 
 			resize();
 			window.addEventListener("resize", resize, false);
 
 			function preload() {
-				this.load.setBaseURL('http://labs.phaser.io');
-				this.load.image('sky', 'assets/skies/space3.png');
+				//this.load.setBaseURL('http://labs.phaser.io');
+				this.load.tilemapTiledJSON('lvl', './assets/maps/landscape.json');
 				this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+				let img = this.load.image('sheet', './assets/images/sheet.png');
 				this.load.image('red', 'assets/particles/red.png');
 			}
-
+			
 			function create() {
 				//background
-				this.add.image(0, 0, 'sky').setOrigin(0, 0);
-
+				this.map = this.add.tilemap('lvl');
+				let tiled = this.map.addTilesetImage('sheet', 'sheet');
+				this.map.createStaticLayer('bottomLayer', tiled, 0, 0)
+				this.map.createStaticLayer('topLayer', tiled, 0, 0)
 				// phaser logo and particle emitter
 				let particles = this.add.particles('red');
+				//let start = <ObjectEntity>this.map.objects['gameObjects'][0]</ObjectEntity>;
 
 				let emitter = particles.createEmitter({
 					speed: 100,
