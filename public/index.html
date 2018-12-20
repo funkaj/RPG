@@ -49,7 +49,7 @@
 		}
 
 		window.onload = function () {
-			let player;
+		
 			let config = {
 				type: Phaser.AUTO,
 				width: 800,
@@ -70,15 +70,17 @@
 				}
 			};
 
-			let game = new Phaser.Game(config);
+			const game = new Phaser.Game(config);
 			let controls;
+			let player;
 			let cursors;
-			// resize();
-			// window.addEventListener("resize", resize, false);
+			resize();
+			window.addEventListener("resize", resize, false);
 
 			function preload() {
 				this.load.tilemapTiledJSON('lvl', './assets/maps/landscape.json');
 				let img = this.load.image('sheet', './assets/images/sheet.png');
+				this.load.atlas("lid", "./assets/images/atlas/lid.png", "./assets/images/atlas/lid.json");
 			}
 
 			function create() {
@@ -92,7 +94,7 @@
 
 				const spawnPoint = map.findObject("gameObject", obj => obj.name === "start");
 				player = this.physics.add
-					.sprite(spawnPoint.x, spawnPoint.y, "atlas", "misa-front")
+					.sprite(spawnPoint.x, spawnPoint.y, "lid", "idle/front/0001")
 					.setSize(30, 40)
 					.setOffset(0, 24);
 
@@ -105,6 +107,52 @@
 				});
 
 				this.physics.add.collider(player, midLayer);
+				const anims = this.anims;
+				anims.create({
+					key: "run/left/0001",
+					frames: anims.generateFrameNames("lid", {
+						prefix: "run/left/0001.",
+						start: 0,
+						end: 3,
+						zeroPad: 3
+					}),
+					frameRate: 10,
+					repeat: -1
+				});
+				anims.create({
+					key: "run/right/0001",
+					frames: anims.generateFrameNames("lid", {
+						prefix: "run/right/0001.",
+						start: 0,
+						end: 3,
+						zeroPad: 3
+					}),
+					frameRate: 10,
+					repeat: -1
+				});
+				anims.create({
+					key: "run/front/0001",
+					frames: anims.generateFrameNames("lid", {
+						prefix: "run/front/0001.",
+						start: 0,
+						end: 3,
+						zeroPad: 3
+					}),
+					frameRate: 10,
+					repeat: -1
+				});
+				anims.create({
+					key: "run/back/0001",
+					frames: anims.generateFrameNames("lid", {
+						prefix: "run/back/0001.",
+						start: 0,
+						end: 3,
+						zeroPad: 3
+					}),
+					frameRate: 10,
+					repeat: -1
+				});
+
 				const camera = this.cameras.main;
 
 				// Set up the arrows to control the camera
@@ -138,25 +186,40 @@
 
 			}
 
+			// Update the animation last and give left/right animations precedence over up/down animations
+			if (cursors.left.isDown) {
+				player.anims.play("run/left/0001", true);
+			} else if (cursors.right.isDown) {
+				player.anims.play("run/right/0001", true);
+			} else if (cursors.up.isDown) {
+				player.anims.play("run/back/0001", true);
+			} else if (cursors.down.isDown) {
+				player.anims.play("run/front/0001", true);
+			} else {
+				player.anims.stop();
 
-
-
+			// If we were moving, pick and idle frame to use
+				if (prevVelocity.x < 0) player.setTexture("lid", "idle/left/0001");
+				else if (prevVelocity.x > 0) player.setTexture("lid", "idle/right/0001");
+				else if (prevVelocity.y < 0) player.setTexture("lid", "idle/back/0001");
+				else if (prevVelocity.y > 0) player.setTexture("lid", "idle/front/0001");
+			}
 
 			// function to resize game screen to be responsive to screen size
-			// 	function resize() {
-			// 		let canvas = document.querySelector('canvas');
-			// 		let windowWidth = window.innerWidth;
-			// 		let windowHeight = window.innerHeight;
-			// 		let windowRatio = windowWidth / windowHeight;
-			// 		let gameRatio = game.config.width / game.config.height;
-			// 		if (windowRatio < gameRatio) {
-			// 			canvas.style.width = windowWidth + "px";
-			// 			canvas.style.height = (windowWidth / gameRatio) + "px";
-			// 		} else {
-			// 			canvas.style.width = (windowHeight * gameRatio) + "px";
-			// 			canvas.style.height = windowHeight + "px";
-			// 		}
-			// 	}
+			function resize() {
+				let canvas = document.querySelector('canvas');
+				let windowWidth = window.innerWidth;
+				let windowHeight = window.innerHeight;
+				let windowRatio = windowWidth / windowHeight;
+				let gameRatio = game.config.width / game.config.height;
+				if (windowRatio < gameRatio) {
+					canvas.style.width = windowWidth + "px";
+					canvas.style.height = (windowWidth / gameRatio) + "px";
+				} else {
+					canvas.style.width = (windowHeight * gameRatio) + "px";
+					canvas.style.height = windowHeight + "px";
+				}
+			}
 		}
 	</script>
 </body>
