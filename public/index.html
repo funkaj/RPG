@@ -80,7 +80,14 @@
 
 			function preload() {
 				this.load.tilemapTiledJSON('lvl', './assets/maps/landscape.json');
-				let img = this.load.image('sheet', './assets/images/sheet.png');
+
+				this.load.image('sheet', './assets/images/sheet.png');
+				// this.load.image('sheet', './assets/images/tileset_cave.png');
+				// this.load.image('sheet', './assets/images/tileset_mountains.png');
+				// this.load.image('sheet', './assets/images/tileset_mountains2.png');
+				// this.load.image('sheet', './assets/images/tileset_water-animated.png');
+				//this.load.image('sheet', './assets/images/tilesetother.png');
+
 				this.load.atlas("lid", "./assets/images/atlas/lid.png", "./assets/images/atlas/lid.json");
 			}
 
@@ -92,6 +99,7 @@
 				let tiled = map.addTilesetImage('sheet', 'sheet');
 				let bottomLayer = map.createStaticLayer('bottomLayer', tiled, 0, 0);
 				let midLayer = map.createStaticLayer('midLayer', tiled, 0, 0);
+				let topLayer = map.createStaticLayer('topLayer', tiled, 0, 0);
 
 				const spawnPoint = map.findObject("gameObject", obj => obj.name === "start");
 				player = this.physics.add
@@ -130,7 +138,7 @@
 						suffix: '.png',
 						start: 1,
 						end: 7,
-						zeroPad: 4
+						zeroPad: 4,
 					}),
 					frameRate: 10,
 					repeat: -1
@@ -142,7 +150,7 @@
 						suffix: '.png',
 						start: 1,
 						end: 7,
-						zeroPad: 4
+						zeroPad: 4, 
 					}),
 					frameRate: 10,
 					repeat: -1
@@ -154,7 +162,7 @@
 						suffix: '.png',
 						start: 1,
 						end: 7,
-						zeroPad: 4
+						zeroPad: 4, 
 					}),
 					frameRate: 10,
 					repeat: -1
