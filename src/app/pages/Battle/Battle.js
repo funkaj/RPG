@@ -6,12 +6,7 @@ class Battle extends React.Component {
 
 		return (
 			window.onload = function () {
-				let gameOptions = {
-					tileSize: 32,
-					gameWidth: 800,
-					gameHeight: 500,
-					gameSpeed: 100
-				}
+				
 				var Unit = new Phaser.Class({
 					Extends: Phaser.GameObjects.Sprite,
 
@@ -37,6 +32,8 @@ class Battle extends React.Component {
 
 					initialize: function Enemy(scene, x, y, texture, frame, type, hp, damage) {
 						Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
+						// flip the image so I don't have to edit it manually
+						this.flipX = true;
 					}
 				});
 
@@ -45,10 +42,10 @@ class Battle extends React.Component {
 
 					initialize: function PlayerCharacter(scene, x, y, texture, frame, type, hp, damage) {
 						Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
-						// flip the image so I don't have to edit it manually
-						this.flipX = true;
+						
+						
 
-						this.setScale(2);
+						// this.setScale(2);
 					}
 				});
 
@@ -126,10 +123,10 @@ class Battle extends React.Component {
 						var mage = new PlayerCharacter(this, 250, 100, 'lid', 4, 'Mage', 80, 8);
 						this.add.existing(mage);
 
-						var dragonblue = new Enemy(this, 50, 50, 'dragonblue', null, 'Dragon', 50, 3);
+						var dragonblue = new Enemy(this, 50, 50, 'lid', null, 'Dragon', 50, 3);
 						this.add.existing(dragonblue);
 
-						var dragonOrange = new Enemy(this, 50, 100, 'dragonorrange', null, 'Dragon2', 50, 3);
+						var dragonOrange = new Enemy(this, 50, 100, 'lid', null, 'Dragon2', 50, 3);
 						this.add.existing(dragonOrange);
 
 						// array with heroes
