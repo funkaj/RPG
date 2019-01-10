@@ -6,7 +6,7 @@ class Battle extends React.Component {
 
 		return (
 			window.onload = function () {
-				
+
 				var Unit = new Phaser.Class({
 					Extends: Phaser.GameObjects.Sprite,
 
@@ -33,7 +33,7 @@ class Battle extends React.Component {
 					initialize: function Enemy(scene, x, y, texture, frame, type, hp, damage) {
 						Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
 						// flip the image so I don't have to edit it manually
-						this.flipX = true;
+						// this.flipX = true;
 					}
 				});
 
@@ -42,9 +42,6 @@ class Battle extends React.Component {
 
 					initialize: function PlayerCharacter(scene, x, y, texture, frame, type, hp, damage) {
 						Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
-						
-						
-
 						// this.setScale(2);
 					}
 				});
@@ -69,7 +66,7 @@ class Battle extends React.Component {
 					deselect: function () {
 						this.setColor('#ffffff');
 					}
-					
+
 
 				});
 
@@ -91,6 +88,8 @@ class Battle extends React.Component {
 							frameWidth: 16,
 							frameHeight: 16
 						});
+						this.load.image("enemy", "./assets/images/flameball.png")
+						this.load.image("boss", "./assets/images/disciple.png")
 
 					},
 
@@ -116,17 +115,17 @@ class Battle extends React.Component {
 						this.cameras.main.setBackgroundColor('rgba(0, 200, 0, 0.5)');
 
 						// player character - warrior
-						var warrior = new PlayerCharacter(this, 250, 50, 'lid', 1, 'Warrior', 100, 20);
+						var warrior = new PlayerCharacter(this, 250, 50, 'lid', 1, 'Lid', 100, 20);
 						this.add.existing(warrior);
 
 						// player character - mage
-						var mage = new PlayerCharacter(this, 250, 100, 'lid', 4, 'Mage', 80, 8);
+						var mage = new PlayerCharacter(this, 250, 100, 'lid', 4, 'Lid', 80, 8);
 						this.add.existing(mage);
 
-						var dragonblue = new Enemy(this, 50, 50, 'lid', null, 'Dragon', 50, 3);
+						var dragonblue = new Enemy(this, 50, 50, 'enemy', null, 'Flame', 50, 3);
 						this.add.existing(dragonblue);
 
-						var dragonOrange = new Enemy(this, 50, 100, 'lid', null, 'Dragon2', 50, 3);
+						var dragonOrange = new Enemy(this, 50, 100, 'boss', null, 'Boss', 50, 3);
 						this.add.existing(dragonOrange);
 
 						// array with heroes
@@ -178,7 +177,18 @@ class Battle extends React.Component {
 						this.menus.add(this.actionsMenu);
 						this.menus.add(this.enemiesMenu);
 						this.battleScene = this.scene.get('BattleScene');
-					}
+						this.remapHeroes();
+						this.remapEnemies();
+					},
+					
+					remapHeroes: function () {
+						var heroes = this.battleScene.heroes;
+						this.heroesMenu.remap(heroes);
+					},
+					remapEnemies: function () {
+						var enemies = this.battleScene.enemies;
+						this.enemiesMenu.remap(enemies);
+					},
 				});
 
 				var Menu = new Phaser.Class({
@@ -186,7 +196,7 @@ class Battle extends React.Component {
 
 					initialize:
 
-					
+
 						function Menu(x, y, scene, heroes) {
 							Phaser.GameObjects.Container.call(this, scene, x, y);
 							this.menuItems = [];
@@ -194,7 +204,7 @@ class Battle extends React.Component {
 							this.heroes = heroes;
 							this.x = x;
 							this.y = y;
-							
+
 						},
 					addMenuItem: function (unit) {
 						var menuItem = new MenuItem(0, this.menuItems.length * 20, unit, this.scene);
@@ -230,9 +240,25 @@ class Battle extends React.Component {
 					},
 					confirm: function () {
 						// wen the player confirms his slection, do the action
-					}
+					},
 
-					
+					clear: function () {
+						for (var i = 0; i < this.menuItems.length; i++) {
+							this.menuItems[i].destroy();
+						}
+						this.menuItems.length = 0;
+						this.menuItemIndex = 0;
+					},
+					remap: function (units) {
+						this.clear();
+						for (var i = 0; i < units.length; i++) {
+							var unit = units[i];
+							this.addMenuItem(unit.type);
+						}
+					},
+
+
+
 				});
 
 				var HeroesMenu = new Phaser.Class({
