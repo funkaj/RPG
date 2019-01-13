@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import Game from './app/pages/Game';
-import Battle from './app/pages/Battle'
+//import Battle from './app/pages/Battle'
 const App = () => (
 
-	//   <Game />
-	<Battle />
+	   <Game />
+	//<Battle />
 
 )
 

@@ -103,7 +103,7 @@ class Battle extends React.Component {
 						}
 					},
 					receivePlayerSelection: function (action, target) {
-						if (action == 'attack') {
+						if (action === 'attack') {
 							this.units[this.index].attack(this.enemies[target]);
 						}
 						this.time.addEvent({
