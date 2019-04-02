@@ -45,22 +45,22 @@ let WorldScene = new Phaser.Class({
 
 	create: function() {
 		// create the map
-		const map = this.make.tilemap({
+		var map = this.make.tilemap({
 			key: 'lvl',
 		});
 
 		// first parameter is the name of the tilemap in tiled
-		let tiled = map.addTilesetImage('sheet', 'sheet');
+		var tiled = map.addTilesetImage('sheet', 'sheet');
 
 		// creating the layers
 		// eslint-disable-next-line no-unused-vars
-		let bottomLayer = map.createStaticLayer('bottomLayer', tiled, 0, 0);
-		let midLayer = map.createStaticLayer('midLayer', tiled, 0, 0);
+		var bottomLayer = map.createStaticLayer('bottomLayer', tiled, 0, 0);
+		var midLayer = map.createStaticLayer('midLayer', tiled, 0, 0);
 		// let topLayer = map.createStaticLayer('topLayer', tiled, 0, 0);
 
 		midLayer.setCollisionByExclusion([-1]);
 		// user input
-		this.cursors = this.input.keyboard.createCursorKeys();
+		
 		//animation keys
 		this.anims.create({
 			key: 'left',
@@ -123,9 +123,11 @@ let WorldScene = new Phaser.Class({
 		this.player.setCollideWorldBounds(true);
 		this.physics.add.collider(this.player, midLayer);
 		//limit camera movement to character
-		this.cameras.main.startFollow(this.player);
 		this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+		this.cameras.main.startFollow(this.player);
 		this.cameras.main.roundPixels = true; // avoid tile bleed
+
+		this.cursors = this.input.keyboard.createCursorKeys();
 
 		// where the enemies will be
 		this.spawns = this.physics.add.group({

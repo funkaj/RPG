@@ -3,6 +3,7 @@ let config = {
 	parent: 'content',
 	width: 320,
 	height: 240,
+	zoom: 2,
 	pixelArt: true,
 	physics: {
 		default: 'arcade',
