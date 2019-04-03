@@ -1,0 +1,6 @@
+canvas {
+	width: 100vw;
+	overflow: hidden;
+	border: rgb(80, 80, 80) solid 1.5rem;
+	margin: 0 auto;
+}
