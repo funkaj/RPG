@@ -1,0 +1,1 @@
+beryl_standby_01.png.png 5 6, beryl_standby_02.png.png 83 31, beryl_standby_03.png.png 85 5, beryl_standby_04.png.png 160 27, beryl_standby_05.png.png 163 6, beryl_standby_06.png.png 5 101, beryl_standby_07.png.png 7 80.

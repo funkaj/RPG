@@ -28,28 +28,19 @@ export const BattleScene = new Phaser.Class({
 		this.add.existing(warrior);
 
 		// player character - mage
-		var mage = new PlayerCharacter(this, 250, 100, 'player', 4, 'Mage', 80, 8);
+		var mage = new PlayerCharacter(this, 250, 100, 'beryl', 4, 'Mage', 80, 8);
 		this.add.existing(mage);
 
 		var cultist = new Enemy(this, 50, 50, 'cultist', null, 'Cultist', 10, 3);
 		this.add.existing(cultist);
 
-		var dragonOrange = new Enemy(
-			this,
-			50,
-			100,
-			'dragonorrange',
-			null,
-			'Dragon2',
-			50,
-			3
-		);
-		this.add.existing(dragonOrange);
+		var flame = new Enemy(this, 50, 100, 'flame', null, 'Flame', 8, 3);
+		this.add.existing(flame);
 
 		// array with heroes
 		this.heroes = [warrior, mage];
 		// array with enemies
-		this.enemies = [cultist, dragonOrange];
+		this.enemies = [cultist, flame];
 		// array with both parties, who will attack
 		this.units = this.heroes.concat(this.enemies);
 
@@ -101,6 +92,7 @@ export const BattleScene = new Phaser.Class({
 		}
 		var gameOver = true;
 		// if all heroes are dead we have game over
+		// eslint-disable-next-line no-redeclare
 		for (var i = 0; i < this.heroes.length; i++) {
 			if (this.heroes[i].living) gameOver = false;
 		}
@@ -108,6 +100,7 @@ export const BattleScene = new Phaser.Class({
 	},
 	// when the player have selected the enemy to be attacked
 	receivePlayerSelection: function(action, target) {
+		// eslint-disable-next-line eqeqeq
 		if (action == 'attack') {
 			this.units[this.index].attack(this.enemies[target]);
 		}
@@ -182,6 +175,7 @@ export const Enemy = new Phaser.Class({
 
 	initialize: function Enemy(scene, x, y, texture, frame, type, hp, damage) {
 		Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
+		this.setScale(1.5);
 	},
 });
 
@@ -199,10 +193,8 @@ export const PlayerCharacter = new Phaser.Class({
 		damage
 	) {
 		Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
-		// flip the image so I don"t have to edit it manually
-		this.flipX = true;
 
-		this.setScale(2);
+		this.setScale(1);
 	},
 });
 
@@ -280,6 +272,7 @@ export const Menu = new Phaser.Class({
 		while (!this.menuItems[this.menuItemIndex].active) {
 			this.menuItemIndex++;
 			if (this.menuItemIndex >= this.menuItems.length) this.menuItemIndex = 0;
+			// eslint-disable-next-line eqeqeq
 			if (this.menuItemIndex == index) return;
 		}
 		this.menuItems[this.menuItemIndex].select();
