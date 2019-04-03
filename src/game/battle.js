@@ -9,6 +9,7 @@ export const BattleScene = new Phaser.Class({
 	create: function() {
 		// change the background to green
 		this.cameras.main.setBackgroundColor('rgba(0, 200, 0, 0.5)');
+
 		this.startBattle();
 		// on wake event we call startBattle too
 		this.sys.events.on('wake', this.startBattle, this);
@@ -20,21 +21,55 @@ export const BattleScene = new Phaser.Class({
 			250,
 			50,
 			'player',
+			'idle/left/0001.png',
+			'Lid',
 			1,
-			'Warrior',
 			100,
 			20
 		);
+		this.anims.play('idle-lid-battle', warrior);
 		this.add.existing(warrior);
 
 		// player character - mage
-		var mage = new PlayerCharacter(this, 250, 100, 'beryl', 4, 'Mage', 80, 8);
+		var mage = new PlayerCharacter(
+			this,
+			250,
+			100,
+			'beryl',
+			'401004807_idle_0001.png',
+			'Beryl',
+			4,
+			80,
+			8
+		);
+		this.anims.play('idle', mage);
 		this.add.existing(mage);
 
-		var cultist = new Enemy(this, 50, 50, 'cultist', null, 'Cultist', 10, 3);
+		var cultist = new Enemy(
+			this,
+			50,
+			50,
+			'cultist',
+			'disciple-45x51_01.png',
+			'Cultist',
+			null,
+			10,
+			3
+		);
 		this.add.existing(cultist);
 
-		var flame = new Enemy(this, 50, 100, 'flame', null, 'Flame', 8, 3);
+		var flame = new Enemy(
+			this,
+			50,
+			100,
+			'flame',
+			'flameball-32x32_01.png',
+			'Flame',
+			null,
+			8,
+			3
+		);
+		this.anims.play('idle-flame', flame);
 		this.add.existing(flame);
 
 		// array with heroes
@@ -194,7 +229,7 @@ export const PlayerCharacter = new Phaser.Class({
 	) {
 		Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
 
-		this.setScale(1);
+		this.setScale(0.8);
 	},
 });
 

@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { BattleScene } from './battle';
 import { UIScene } from './battle';
 import './style.css';
+
 class Game extends React.Component {
 	render() {
 		return (window.onload = function() {
@@ -15,28 +16,24 @@ class Game extends React.Component {
 
 				preload: function() {
 					// map tiles
-					//works
-					//this.load.image('tiles', 'assets/map/spritesheet.png');
-					//test
 					this.load.image('tiles', './assets/images/sheet.png');
 
 					// map in json format
-					//works
-					//this.load.tilemapTiledJSON('map', 'assets/map/map.json');
-					//test
 					this.load.tilemapTiledJSON('map', './assets/maps/landscape.json');
 
 					// enemies
-					this.load.image('cultist', 'assets/images/disciple.png');
-					this.load.image('flame', 'assets/images/flameball.png');
+					this.load.atlas(
+						'cultist',
+						'assets/images/cultist.png',
+						'assets/images/cultist.json'
+					);
+					this.load.atlas(
+						'flame',
+						'assets/images/flame.png',
+						'assets/images/flame.json'
+					);
 
 					// our two characters
-					//works
-					//this.load.spritesheet('player', 'assets/RPG_assets.png', {
-					//	frameWidth: 16,
-					//	frameHeight: 16,
-					//});
-					//test
 					this.load.atlas(
 						'player',
 						'./assets/images/atlas/lid.png',
@@ -46,7 +43,15 @@ class Game extends React.Component {
 							frameHeight: 16,
 						}
 					);
-					this.load.image('beryl', './assets/images/beryl_standby_01.png');
+					this.load.atlas(
+						'beryl',
+						'./assets/images/atlas/beryl.png',
+						'./assets/images/atlas/beryl.json',
+						{
+							frameWidth: 16,
+							frameHeight: 16,
+						}
+					);
 				},
 
 				create: function() {
@@ -73,54 +78,25 @@ class Game extends React.Component {
 
 					// creating the layers
 					// eslint-disable-next-line no-unused-vars
-					//var grass = map.createStaticLayer('Grass', tiles, 0, 0);
-					//var obstacles = map.createStaticLayer('Obstacles', tiles, 0, 0);
-					//test
 					var bottomLayer = map.createStaticLayer('bottomLayer', tiles, 0, 0);
 					var midLayer = map.createStaticLayer('midLayer', tiles, 0, 0);
 
 					// make all tiles in obstacles collidable
-					//obstacles.setCollisionByExclusion([-1]);
-					//test
 					midLayer.setCollisionByExclusion([-1]);
 
-					//  animation with key 'left', we don't need left and right as we will use one and flip the sprite
-					//this.anims.create({
-					//	key: 'left',
-					//	frames: this.anims.generateFrameNumbers('player', {
-					//		frames: [1, 7, 1, 13],
-					//	}),
-					//	frameRate: 10,
-					//	repeat: -1,
-					//});
-					//
-					//// animation with key 'right'
-					//this.anims.create({
-					//	key: 'right',
-					//	frames: this.anims.generateFrameNumbers('player', {
-					//		frames: [1, 7, 1, 13],
-					//	}),
-					//	frameRate: 10,
-					//	repeat: -1,
-					//});
-					//this.anims.create({
-					//	key: 'up',
-					//	frames: this.anims.generateFrameNumbers('player', {
-					//		frames: [2, 8, 2, 14],
-					//	}),
-					//	frameRate: 10,
-					//	repeat: -1,
-					//});
-					//this.anims.create({
-					//	key: 'down',
-					//	frames: this.anims.generateFrameNumbers('player', {
-					//		frames: [0, 6, 0, 12],
-					//	}),
-					//	frameRate: 10,
-					//	repeat: -1,
-					//});
 					const anims = this.anims;
-
+					anims.create({
+						key: 'idle-lid-battle',
+						frames: this.anims.generateFrameNames('player', {
+							start: 0,
+							end: 7,
+							zeroPad: 4,
+							prefix: 'idle/left/',
+							suffix: '.png',
+						}),
+						frameRate: 10,
+						repeat: -1,
+					});
 					anims.create({
 						key: 'left',
 						frames: this.anims.generateFrameNames('player', {
@@ -169,14 +145,54 @@ class Game extends React.Component {
 						frameRate: 10,
 						repeat: -1,
 					});
+					//create beryl idle animation
+					this.anims.create({
+						key: 'idle',
+						frames: this.anims.generateFrameNames('beryl', {
+							start: 0,
+							end: 4,
+							zeroPad: 4,
+							prefix: '401004807_idle_',
+							suffix: '.png',
+						}),
+						frameRate: 4,
+						repeat: -1,
+					});
+					//create cultist idle animation
+					this.anims.create({
+						key: 'idle-cultist',
+						frames: this.anims.generateFrameNames('cultist', {
+							start: 0,
+							end: 13,
+							zeroPad: 4,
+							prefix: 'disciple-45x51_',
+							suffix: '.png',
+						}),
+						frameRate: 4,
+						repeat: -1,
+					});
+					//create flame idle animation
+					this.anims.create({
+						key: 'idle-flame',
+						frames: this.anims.generateFrameNames('flame', {
+							start: 0,
+							end: 4,
+							zeroPad: 4,
+							prefix: 'flameball-32x32_',
+							suffix: '.png',
+						}),
+						frameRate: 5,
+						repeat: -1,
+					});
+
 					//our player sprite created through the phycis system
-					//this.player = this.physics.add.sprite(50, 100, 'player', 6);
 					const spawnPoint = map.findObject(
 						'gameObject',
 						obj => obj.name === 'start'
 					);
 					this.player = this.physics.add
 						.sprite(spawnPoint.x, spawnPoint.y, 'player', 'idle/front/0001.png')
+						.setScale(0.9)
 						.setSize(30, 55)
 						.setOffset(18, 5);
 
@@ -244,6 +260,7 @@ class Game extends React.Component {
 					this.scene.switch('BattleScene');
 				},
 				update: function(time, delta) {
+					// eslint-disable-next-line no-unused-vars
 					const speed = 175;
 					const prevVelocity = this.player.body.velocity.clone();
 					this.player.body.setVelocity(0);
