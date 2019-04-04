@@ -1,65 +1,14 @@
 import React from 'react';
 import Phaser from 'phaser';
-import { BattleScene } from './battle';
-import { UIScene } from './battle';
+
+import BootScene from '../bootscene/bootscene';
+import { BattleScene, UIScene } from '../battle/index';
+
 import './style.css';
 
 class Game extends React.Component {
 	render() {
 		return (window.onload = function() {
-			const BootScene = new Phaser.Class({
-				Extends: Phaser.Scene,
-
-				initialize: function BootScene() {
-					Phaser.Scene.call(this, { key: 'BootScene' });
-				},
-
-				preload: function() {
-					// map tiles
-					this.load.image('tiles', './assets/images/sheet.png');
-
-					// map in json format
-					this.load.tilemapTiledJSON('map', './assets/maps/landscape.json');
-
-					// enemies
-					this.load.atlas(
-						'cultist',
-						'assets/images/cultist.png',
-						'assets/images/cultist.json'
-					);
-					this.load.atlas(
-						'flame',
-						'assets/images/flame.png',
-						'assets/images/flame.json'
-					);
-
-					// our two characters
-					this.load.atlas(
-						'player',
-						'./assets/images/atlas/lid.png',
-						'./assets/images/atlas/lid.json',
-						{
-							frameWidth: 16,
-							frameHeight: 16,
-						}
-					);
-					this.load.atlas(
-						'beryl',
-						'./assets/images/atlas/beryl.png',
-						'./assets/images/atlas/beryl.json',
-						{
-							frameWidth: 16,
-							frameHeight: 16,
-						}
-					);
-				},
-
-				create: function() {
-					// start the WorldScene
-					this.scene.start('WorldScene');
-				},
-			});
-
 			const WorldScene = new Phaser.Class({
 				Extends: Phaser.Scene,
 
@@ -192,7 +141,7 @@ class Game extends React.Component {
 					);
 					this.player = this.physics.add
 						.sprite(spawnPoint.x, spawnPoint.y, 'player', 'idle/front/0001.png')
-						.setScale(0.9)
+						.setScale(0.7)
 						.setSize(30, 55)
 						.setOffset(18, 5);
 
@@ -301,13 +250,12 @@ class Game extends React.Component {
 					}
 				},
 			});
-
 			var config = {
 				type: Phaser.AUTO,
 				parent: 'content',
 				width: 320,
 				height: 240,
-				zoom: 3,
+				zoom: 2,
 				pixelArt: true,
 				physics: {
 					default: 'arcade',

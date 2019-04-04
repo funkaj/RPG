@@ -1,0 +1,34 @@
+{
+"frames": [
+	{
+		"filename": "left/lidAttack/0001.png",
+		"frame": {"x":172, "y":0, "w":44, "h":53},
+		"spriteSourceSize": {"x":0,"y":0,"w":44,"h":53},
+		"sourceSize": {"w":44,"h":53}
+	},
+	{
+		"filename": "left/lidAttack/0002.png",
+		"frame": {"x":76, "y":0, "w":47, "h":51},
+		"spriteSourceSize": {"x":0,"y":0,"w":47,"h":51},
+		"sourceSize": {"w":47,"h":51}
+	},
+	{
+		"filename": "left/lidAttack/0003.png",
+		"frame": {"x":0, "y":0, "w":75, "h":51},
+		"spriteSourceSize": {"x":0,"y":0,"w":75,"h":51},
+		"sourceSize": {"w":75,"h":51}
+	},
+	{
+		"filename": "left/lidAttack/0004.png",
+		"frame": {"x":124, "y":0, "w":47, "h":44},
+		"spriteSourceSize": {"x":0,"y":0,"w":47,"h":44},
+		"sourceSize": {"w":47,"h":44}
+	}
+
+],
+"meta": {
+	"image": "lidAttack.png",
+	"size": {"w": 256, "h": 64},
+	"scale": "1"
+}
+}
